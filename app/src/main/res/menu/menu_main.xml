@@ -6,4 +6,8 @@
             android:title="Log"
             app:showAsAction="never"
           />
+      <item android:id="@+id/action_crash_handler"
+            android:title="CrashHandler"
+            app:showAsAction="never"
+            />
 </menu>

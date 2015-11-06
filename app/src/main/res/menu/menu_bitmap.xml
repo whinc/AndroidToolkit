@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.whinc.util.test.BitmapActivity">
+    <item android:id="@+id/action_crop_center"
+          android:title="crop center"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+      <item android:id="@+id/action_crop_left_top"
+            android:title="crop left top"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+      <item android:id="@+id/action_crop_right_bottom"
+            android:title="crop right bottom"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+</menu>

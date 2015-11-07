@@ -16,6 +16,10 @@
         <activity
             android:name=".BitmapActivity"
             android:label="@string/title_activity_bitmap" >
+        </activity>
+        <activity
+            android:name=".SystemServiceActivity"
+            android:label="@string/title_activity_system_service" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

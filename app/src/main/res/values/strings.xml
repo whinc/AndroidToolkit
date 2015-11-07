@@ -6,4 +6,5 @@
     <string name="title_activity_log">LogActivity</string>
     <string name="title_activity_crash_handler">CrashHandlerActivity</string>
     <string name="title_activity_bitmap">BitmapActivity</string>
+    <string name="title_activity_system_service">SystemServiceActivity</string>
 </resources>

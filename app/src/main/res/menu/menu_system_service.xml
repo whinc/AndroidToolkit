@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.whinc.util.test.SystemServiceActivity">
+    <item android:id="@+id/action_schedule_start_activity"
+          android:title="schedule start activity after 2000ms"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>

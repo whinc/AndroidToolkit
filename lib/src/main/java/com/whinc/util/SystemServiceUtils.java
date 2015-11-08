@@ -30,8 +30,9 @@ public class SystemServiceUtils {
     }
 
     /**
-     * <p>Schedule activity to be started after specified milliseconds.
-     *     <pre>example: scheduleStart(context, 2000, YourActivity.class);</pre></p>
+     * <p>Schedule activity to be started after specified milliseconds.<br>
+     *     {@code example: scheduleStart(context, 2000, YourActivity.class);}
+     * </p>
      * @param context {@link Context}
      * @param delayMillis delay milliseconds
      * @param cls the activity will be start

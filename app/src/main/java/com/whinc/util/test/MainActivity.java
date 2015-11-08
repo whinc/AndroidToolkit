@@ -88,31 +88,42 @@ public class MainActivity extends AppCompatActivity {
      * Test {@link Log}
      */
     private void testLog() {
-        Log.v(TAG, "verbose");
-        Log.d(TAG, "debug");
-        Log.i(TAG, "information");
-        Log.w(TAG, "warning");
-        Log.e(TAG, "error");
+        Log.i(TAG, "default output format");
 
         Log.enablePrintLineInfo(false);
-        Log.v(TAG, "verbose");
-        Log.d(TAG, "debug");
-        Log.i(TAG, "information");
-        Log.w(TAG, "warning");
-        Log.e(TAG, "error");
+        Log.i(TAG, "disable print line info");
 
         Log.level(Log.LEVEL_I);
-        Log.v(TAG, "verbose");
-        Log.d(TAG, "debug");
+        Log.v(TAG, "debug");
         Log.i(TAG, "information");
-        Log.w(TAG, "warning");
         Log.e(TAG, "error");
 
         Log.enable(false);
-        Log.v(TAG, "verbose");
-        Log.d(TAG, "debug");
-        Log.i(TAG, "information");
-        Log.w(TAG, "warning");
-        Log.e(TAG, "error");
+        Log.v(TAG, "disable log");
+
+        Log.enable(true);
+        Log.enablePrintLineInfo(true);
+        Log.Formatter formatter = new Log.Formatter() {
+
+            @Override
+            public String format(String msg, StackTraceElement e) {
+                StringBuilder builder = new StringBuilder();
+                String threadInfo = String.format("- Thread:%s\n", Thread.currentThread().getName());
+                String lineInfo = String.format("- %s.%s (%s:%d)\n", e.getClassName(), e.getMethodName(), e.getFileName(), e.getLineNumber());
+                String msgInfo = String.format("- %s \n", msg);
+                builder.append("---------------------------------\n")
+                        .append(threadInfo)
+                        .append("---------------------------------\n")
+                        .append(lineInfo)
+                        .append("---------------------------------\n")
+                        .append(msgInfo)
+                        .append("---------------------------------\n");
+                return builder.toString();
+            }
+        };
+        Log.setFormatter(formatter);
+        Log.i(TAG, "custom formatter");
+
+        Log.setFormatter(null);
     }
 }

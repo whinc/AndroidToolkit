@@ -1,6 +1,7 @@
 package com.whinc.util;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 
 /**
  * Enhanced version of {@link android.util.Log}
@@ -14,11 +15,15 @@ public class Log {
     @IntDef({LEVEL_V, LEVEL_D, LEVEL_I, LEVEL_W, LEVEL_E})
     public @interface Level{}
 
+    /** Default log formatter */
+    public static final Formatter DEFAULT_FORMATTER = new InternalFormatter();
+
 	private static boolean sEnable = true;
     private static boolean sPrintLineInfo = true;
     private static int sLevel = LEVEL_V;
+    private static Formatter sFormatter = DEFAULT_FORMATTER;
 
-	// 禁止实例化
+	// Disable new instance
 	private Log() {}
 
     /** Enable or disable log output (default enable) */
@@ -32,6 +37,17 @@ public class Log {
     }
 
     /**
+     * Set custom formatter
+     * @param formatter reference to {@link com.whinc.util.Log.Formatter}
+     * @return return previous formatter.
+     */
+    public static Formatter setFormatter(Formatter formatter) {
+        Formatter old = sFormatter;
+        sFormatter = formatter == null ? DEFAULT_FORMATTER : formatter;
+        return old;
+    }
+
+    /**
      * Set the least log level.
      * @param level reference to {@link com.whinc.util.Log.Level}
      */
@@ -39,42 +55,33 @@ public class Log {
         sLevel = level;
     }
 
-	/** Get stack information
-	 * @param depth the depth to this method
-	 * @return line info. format "[PackageName.ClassName#MethodName().LineNumber]"
-	 * */
-	protected static String buildStackTraceInfo(int depth) {
-		StringBuilder builder = new StringBuilder();
-		Throwable throwable = new Throwable();
-		StackTraceElement e = throwable.getStackTrace()[depth];
-		builder.append('[')
-				.append(e.getClassName())
-				.append('#')
-				.append(e.getMethodName() + "()")
-				.append(':')
-				.append(e.getLineNumber())
-				.append(']');
-		return builder.toString();
-	}
-
-	protected static String buildStackTraceInfo() {
-		return buildStackTraceInfo(3);		// 调用Logger类的方法的深度为3
-	}
+    /**
+     * Get stack trace element object
+     * @param depth the depth from caller method to this method.
+     * @return
+     */
+    private static StackTraceElement getStackTraceElement(int depth) {
+        return new Throwable().getStackTrace()[depth];
+    }
 
 	public static void v(String tag, String msg) {
 		if (sEnable && sLevel <= LEVEL_V) {
             if (sPrintLineInfo) {
-                android.util.Log.v(tag, msg + buildStackTraceInfo());
+                android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(2)));
             } else {
                 android.util.Log.v(tag, msg);
             }
 		}
 	}
 
+    public static void v(String tag, Throwable tr) {
+        v(tag, getStackString(tr));
+    }
+
 	public static void i(String tag, String msg) {
 		if (sEnable && sLevel <= LEVEL_I) {
             if (sPrintLineInfo) {
-                android.util.Log.i(tag, msg + buildStackTraceInfo());
+                android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(2)));
             } else {
                 android.util.Log.i(tag, msg);
             }
@@ -84,7 +91,7 @@ public class Log {
 	public static void d(String tag, String msg) {
 		if (sEnable && sLevel <= LEVEL_D) {
             if (sPrintLineInfo) {
-                android.util.Log.d(tag, msg + buildStackTraceInfo());
+                android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(2)));
             } else {
                 android.util.Log.d(tag, msg);
             }
@@ -94,7 +101,7 @@ public class Log {
 	public static void w(String tag, String msg) {
 		if (sEnable && sLevel <= LEVEL_W) {
             if (sPrintLineInfo) {
-                android.util.Log.w(tag, msg + buildStackTraceInfo());
+                android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(2)));
             } else {
                 android.util.Log.w(tag, msg);
             }
@@ -104,7 +111,7 @@ public class Log {
 	public static void e(String tag, String msg) {
 		if (sEnable && sLevel <= LEVEL_E) {
             if (sPrintLineInfo) {
-                android.util.Log.e(tag, msg + buildStackTraceInfo());
+                android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(2)));
             } else {
                 android.util.Log.e(tag, msg);
             }
@@ -117,5 +124,26 @@ public class Log {
      */
     public static String getStackString(Throwable tr) {
         return android.util.Log.getStackTraceString(tr);
+    }
+
+    /**
+     * Format log output
+     */
+    public interface Formatter {
+        String format(String msg, StackTraceElement e);
+    }
+
+    private static class InternalFormatter implements Formatter{
+
+        @Override
+        public String format(String msg, StackTraceElement e) {
+            return String.format("%s.%s(%s:%d):%s",
+                    e.getClassName(),
+                    e.getMethodName(),
+                    e.getFileName(),
+                    e.getLineNumber(),
+                    msg
+            );
+        }
     }
 }

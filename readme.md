@@ -12,59 +12,18 @@ dependencies {
 }
 ```
 
-### Introduction
+Below is introduction to these util class.
 
-#### Log (com.whinc.util.Log)
+### Log 
 
-```
-Log.v(TAG, "verbose");
-Log.d(TAG, "debug");
-Log.i(TAG, "information");
-Log.w(TAG, "warning");
-Log.e(TAG, "error");
+A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class.
 
-// output with line info.
-V/LogActivity﹕ verbose[com.whinc.util.test.LogActivity#onCreate():25]
-D/LogActivity﹕ debug[com.whinc.util.test.LogActivity#onCreate():26]
-I/LogActivity﹕ information[com.whinc.util.test.LogActivity#onCreate():27]
-W/LogActivity﹕ warning[com.whinc.util.test.LogActivity#onCreate():28]
-E/LogActivity﹕ error[com.whinc.util.test.LogActivity#onCreate():29]
+You can choose to enable or disable specified feature, if you disable all features it acts just same as android.util.Log. 
 
-Log.enablePrintLineInfo(false);
-Log.v(TAG, "verbose");
-Log.d(TAG, "debug");
-Log.i(TAG, "information");
-Log.w(TAG, "warning");
-Log.e(TAG, "error");
+You can use it with the same way to android.util.Log without no any study cost.
 
-// output with out line info behaves just like android.util.Log
-V/LogActivity﹕ verbose
-D/LogActivity﹕ debug
-I/LogActivity﹕ information
-W/LogActivity﹕ warning
-E/LogActivity﹕ error
+More details reference to [wiki](https://github.com/whinc/AndroidToolkit/wiki/Log)
 
-Log.level(Log.LEVEL_I);
-Log.v(TAG, "verbose");
-Log.d(TAG, "debug");
-Log.i(TAG, "information");
-Log.w(TAG, "warning");
-Log.e(TAG, "error");
-
-// output without line info and has at least specified level
-I/LogActivity﹕ information
-W/LogActivity﹕ warning
-E/LogActivity﹕ error
-
-Log.enable(false);
-Log.v(TAG, "verbose");
-Log.d(TAG, "debug");
-Log.i(TAG, "information");
-Log.w(TAG, "warning");
-Log.e(TAG, "error");
-
-// output none if log is disable
-```
 
 #### CrashHandler
 

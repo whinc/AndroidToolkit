@@ -162,6 +162,28 @@ public class Log {
     }
 
     /**
+     * Print call stack info.
+     * @param depth call depth
+     */
+    public static void printCallStack(int depth) {
+        Throwable tr = new Throwable();
+        StackTraceElement[] arr = tr.getStackTrace();
+        StringBuilder builder = new StringBuilder();
+        // index start from '1' exclude current method call stack info.
+        for (int i = 1; i <= depth && i < arr.length; ++i) {
+            StackTraceElement e = arr[i];
+            String callInfo = String.format("%s.%s(%s:%d)",
+                    e.getClassName(),
+                    e.getMethodName(),
+                    e.getFileName(),
+                    e.getLineNumber()
+            );
+            builder.append(callInfo).append("\n");
+        }
+        android.util.Log.println(android.util.Log.VERBOSE, "", builder.toString());
+    }
+
+    /**
      * Format log output
      */
     public interface Formatter {

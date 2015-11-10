@@ -14,7 +14,7 @@ dependencies {
 
 Below is introduction to these util class.
 
-### Log 
+### [Log][log_wiki]
 
 A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class.
 
@@ -22,7 +22,7 @@ You can choose to enable or disable specified feature, if you disable all featur
 
 You can use it with the same way to android.util.Log without no any study cost.
 
-More details reference to [wiki](https://github.com/whinc/AndroidToolkit/wiki/Log)
+More details reference to [wiki][log_wiki]
 
 
 #### CrashHandler
@@ -74,3 +74,4 @@ This is a custom message
 ```
 
 [1]:https://bintray.com/whinc/maven/androidtoolkit/view
+[log_wiki]:https://github.com/whinc/AndroidToolkit/wiki/Log

@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void testLog() {
         Log.i(TAG, "default output format");
+        Log.i(TAG, "default output format", new Throwable());
 
         Log.enablePrintLineInfo(false);
         Log.i(TAG, "disable print line info");
@@ -121,9 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 return builder.toString();
             }
         };
-        Log.setFormatter(formatter);
+        Log.Formatter oldFormatter = Log.setFormatter(formatter);
         Log.i(TAG, "custom formatter");
 
-        Log.setFormatter(null);
+        Log.setFormatter(oldFormatter);
+        Log.level(Log.LEVEL_V);
     }
 }

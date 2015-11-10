@@ -1,7 +1,6 @@
 package com.whinc.util;
 
 import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
 
 /**
  * Enhanced version of {@link android.util.Log}
@@ -15,8 +14,8 @@ public class Log {
     @IntDef({LEVEL_V, LEVEL_D, LEVEL_I, LEVEL_W, LEVEL_E})
     public @interface Level{}
 
-    /** Default log formatter */
-    public static final Formatter DEFAULT_FORMATTER = new InternalFormatter();
+    /** Default log formatter shows log output in one line. */
+    public static final Formatter DEFAULT_FORMATTER = new DefaultFormatter();
 
 	private static boolean sEnable = true;
     private static boolean sPrintLineInfo = true;
@@ -64,59 +63,95 @@ public class Log {
         return new Throwable().getStackTrace()[depth];
     }
 
-	public static void v(String tag, String msg) {
+	private static void v(String tag, String msg, int depth) {
 		if (sEnable && sLevel <= LEVEL_V) {
             if (sPrintLineInfo) {
-                android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(2)));
+                android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.v(tag, msg);
             }
 		}
 	}
 
-    public static void v(String tag, Throwable tr) {
-        v(tag, getStackString(tr));
+    public static void v(String tag, String msg) {
+        v(tag, msg, 3);
     }
 
-	public static void i(String tag, String msg) {
+    public static void v(String tag, String msg, Throwable tr) {
+        v(tag, msg + "\n" + getStackString(tr), 3);
+    }
+
+	private static void i(String tag, String msg, int depth) {
 		if (sEnable && sLevel <= LEVEL_I) {
             if (sPrintLineInfo) {
-                android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(2)));
+                android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.i(tag, msg);
             }
 		}
 	}
 
-	public static void d(String tag, String msg) {
+    public static void i(String tag, String msg) {
+        i(tag, msg, 3);
+    }
+
+    public static void i(String tag, String msg, Throwable tr) {
+        i(tag, msg + "\n" + getStackString(tr), 3);
+    }
+
+	private static void d(String tag, String msg, int depth) {
 		if (sEnable && sLevel <= LEVEL_D) {
             if (sPrintLineInfo) {
-                android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(2)));
+                android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.d(tag, msg);
             }
 		}
 	}
 
-	public static void w(String tag, String msg) {
+    public static void d(String tag, String msg) {
+        d(tag, msg, 3);
+    }
+
+    public static void d(String tag, String msg, Throwable tr) {
+        d(tag, msg + "\n" + getStackString(tr), 3);
+    }
+
+	private static void w(String tag, String msg, int depth) {
 		if (sEnable && sLevel <= LEVEL_W) {
             if (sPrintLineInfo) {
-                android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(2)));
+                android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.w(tag, msg);
             }
 		}
 	}
 
-	public static void e(String tag, String msg) {
+    public static void w(String tag, String msg) {
+        w(tag, msg, 3);
+    }
+
+    public static void w(String tag, String msg, Throwable tr) {
+        w(tag, msg + "\n" + getStackString(tr), 3);
+    }
+
+	private static void e(String tag, String msg, int depth) {
 		if (sEnable && sLevel <= LEVEL_E) {
             if (sPrintLineInfo) {
-                android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(2)));
+                android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.e(tag, msg);
             }
 		}
 	}
+
+    public static void e(String tag, String msg) {
+        e(tag, msg, 3);
+    }
+
+    public static void e(String tag, String msg, Throwable tr) {
+        e(tag, msg + "\n" + getStackString(tr), 3);
+    }
 
     /**
      * Handy function to get a loggable stack trace from a Throwable
@@ -133,7 +168,7 @@ public class Log {
         String format(String msg, StackTraceElement e);
     }
 
-    private static class InternalFormatter implements Formatter{
+    private static class DefaultFormatter implements Formatter{
 
         @Override
         public String format(String msg, StackTraceElement e) {

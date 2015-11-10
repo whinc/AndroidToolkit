@@ -134,5 +134,32 @@ public class MainActivity extends AppCompatActivity {
     private void testLog2() {
         Log.level(Log.LEVEL_V);
         Log.printCallStack(3);
+
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.v(TAG, "intercept " + msg);
+                return true;
+            }
+        });
+        Log.v(TAG, "AAA");
+//        Log.d(TAG, "d");
+//        Log.i(TAG, "i");
+//        Log.w(TAG, "w");
+//        Log.e(TAG, "e");
+        Log.setInterceptor(new Log.Interceptor() {
+
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.v(TAG, "don't intercept " + msg);
+                return false;
+            }
+        });
+        Log.v(TAG, "BBB");
+//        Log.d(TAG, "d");
+//        Log.i(TAG, "i");
+//        Log.w(TAG, "w");
+//        Log.e(TAG, "e");
     }
 }

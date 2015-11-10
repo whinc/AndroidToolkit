@@ -21,6 +21,7 @@ public class Log {
     private static boolean sPrintLineInfo = true;
     private static int sLevel = LEVEL_V;
     private static Formatter sFormatter = DEFAULT_FORMATTER;
+    private static Interceptor sInterceptor = null;
 
 	// Disable new instance
 	private Log() {}
@@ -46,6 +47,18 @@ public class Log {
         return old;
     }
 
+    public static void setInterceptor(Interceptor interceptor) {
+        sInterceptor = interceptor;
+    }
+
+    public static void restoreDefaultSetting() {
+        sEnable = true;
+        sPrintLineInfo = true;
+        sLevel = LEVEL_V;
+        sFormatter = DEFAULT_FORMATTER;
+        sInterceptor = null;
+    }
+
     /**
      * Set the least log level.
      * @param level reference to {@link com.whinc.util.Log.Level}
@@ -63,14 +76,36 @@ public class Log {
         return new Throwable().getStackTrace()[depth];
     }
 
+    /**
+     * check if log output is intercepted
+     * @param tag
+     * @param msg
+     * @return return true if log output is intercepted, otherwise return false.
+     */
+    private static boolean intercept(String tag, String msg) {
+        if (sInterceptor == null) {
+            return false;
+        }
+
+        // store interceptor before call method onIntercept()
+        Interceptor prevInterceptor = sInterceptor;
+        /* set interceptor to null, this can prevent from recursion call if user call
+        Log.v (Log.d, Log.i, etc...) in onIntercept() which will lead to StackOverflow */
+        sInterceptor = null;
+        boolean r = prevInterceptor.onIntercept(tag, msg);
+        // restore interceptor after call method onIntercept()
+        sInterceptor = prevInterceptor;
+        return r;
+    }
+
 	private static void v(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_V) {
+		if (sEnable && sLevel <= LEVEL_V && !intercept(tag, msg)) {
             if (sPrintLineInfo) {
                 android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
                 android.util.Log.v(tag, msg);
             }
-		}
+        }
 	}
 
     public static void v(String tag, String msg) {
@@ -82,7 +117,7 @@ public class Log {
     }
 
 	private static void i(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_I) {
+		if (sEnable && sLevel <= LEVEL_I && !intercept(tag, msg)) {
             if (sPrintLineInfo) {
                 android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
@@ -100,7 +135,7 @@ public class Log {
     }
 
 	private static void d(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_D) {
+		if (sEnable && sLevel <= LEVEL_D && !intercept(tag, msg)) {
             if (sPrintLineInfo) {
                 android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
@@ -118,7 +153,7 @@ public class Log {
     }
 
 	private static void w(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_W) {
+		if (sEnable && sLevel <= LEVEL_W && !intercept(tag, msg)) {
             if (sPrintLineInfo) {
                 android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
@@ -136,7 +171,7 @@ public class Log {
     }
 
 	private static void e(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_E) {
+		if (sEnable && sLevel <= LEVEL_E && !intercept(tag, msg)) {
             if (sPrintLineInfo) {
                 android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(depth)));
             } else {
@@ -202,5 +237,19 @@ public class Log {
                     msg
             );
         }
+    }
+
+    /**
+     * Intercept log output
+     */
+    public interface Interceptor {
+        /**
+         * This method will be called every time print log
+         * @return return true means user has handled log output and the normal output process will
+         * be ignored, otherwise the normal output process will be executed.
+         * @param tag log tag
+         * @param msg log message
+         */
+        boolean onIntercept(String tag, String msg);
     }
 }

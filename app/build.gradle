@@ -30,6 +30,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile project(':lib')
-//    compile 'com.whinc.util:androidtoolkit:0.1.1'
+//    compile project(':lib')
+    compile 'com.whinc.util:androidtoolkit:0.1.2'
 }

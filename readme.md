@@ -16,9 +16,7 @@ Below is introduction to these util class.
 
 ### [Log][log_wiki]
 
-A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class.
-
-More details reference to [wiki][log_wiki]
+A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [wiki][log_wiki]
 
 
 #### CrashHandler

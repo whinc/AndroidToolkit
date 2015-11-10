@@ -18,10 +18,6 @@ Below is introduction to these util class.
 
 A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class.
 
-You can choose to enable or disable specified feature, if you disable all features it acts just same as android.util.Log. 
-
-You can use it with the same way to android.util.Log without no any study cost.
-
 More details reference to [wiki][log_wiki]
 
 

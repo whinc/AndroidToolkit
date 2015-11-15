@@ -127,13 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
         Log.setFormatter(oldFormatter);
         Log.level(Log.LEVEL_V);
-        Log.printCallStack(2);
+        Log.printCallStack(TAG, 2);
         testLog2();
     }
 
     private void testLog2() {
         Log.level(Log.LEVEL_V);
-        Log.printCallStack(3);
+        Log.printCallStack(TAG, 3);
 
         Log.restoreDefaultSetting();
         Log.setInterceptor(new Log.Interceptor() {

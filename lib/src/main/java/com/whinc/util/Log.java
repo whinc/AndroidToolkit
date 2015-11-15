@@ -200,7 +200,7 @@ public class Log {
      * Print call stack info.
      * @param depth call depth
      */
-    public static void printCallStack(int depth) {
+    public static void printCallStack(String tag, int depth) {
         Throwable tr = new Throwable();
         StackTraceElement[] arr = tr.getStackTrace();
         StringBuilder builder = new StringBuilder();
@@ -215,7 +215,7 @@ public class Log {
             );
             builder.append(callInfo).append("\n");
         }
-        android.util.Log.println(android.util.Log.VERBOSE, "", builder.toString());
+        android.util.Log.println(android.util.Log.VERBOSE, tag, builder.toString());
     }
 
     /**

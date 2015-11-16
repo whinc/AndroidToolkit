@@ -6,12 +6,12 @@ import android.support.annotation.IntDef;
  * Enhanced version of {@link android.util.Log}
  */
 public class Log {
-    public static final int LEVEL_V = 2;
-    public static final int LEVEL_D = 4;
-    public static final int LEVEL_I = 6;
-    public static final int LEVEL_W = 8;
-    public static final int LEVEL_E = 10;
-    @IntDef({LEVEL_V, LEVEL_D, LEVEL_I, LEVEL_W, LEVEL_E})
+    public static final int VERBOSE = android.util.Log.VERBOSE;
+    public static final int DEBUG = android.util.Log.DEBUG;
+    public static final int INFO = android.util.Log.INFO;
+    public static final int WARN = android.util.Log.WARN;
+    public static final int ERROR = android.util.Log.ERROR;
+    @IntDef({VERBOSE, DEBUG, INFO, WARN, ERROR})
     public @interface Level{}
 
     /** Default log formatter shows log output in one line. */
@@ -19,7 +19,7 @@ public class Log {
 
 	private static boolean sEnable = true;
     private static boolean sPrintLineInfo = true;
-    private static int sLevel = LEVEL_V;
+    private static int sLevel = VERBOSE;
     private static Formatter sFormatter = DEFAULT_FORMATTER;
     private static Interceptor sInterceptor = null;
 
@@ -54,7 +54,7 @@ public class Log {
     public static void restoreDefaultSetting() {
         sEnable = true;
         sPrintLineInfo = true;
-        sLevel = LEVEL_V;
+        sLevel = VERBOSE;
         sFormatter = DEFAULT_FORMATTER;
         sInterceptor = null;
     }
@@ -73,7 +73,9 @@ public class Log {
      * @return
      */
     private static StackTraceElement getStackTraceElement(int depth) {
-        return new Throwable().getStackTrace()[depth];
+        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+        depth = Math.max(0, Math.min(depth, stackTrace.length - 1));
+        return stackTrace[depth];
     }
 
     /**
@@ -98,94 +100,145 @@ public class Log {
         return r;
     }
 
-	private static void v(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_V && !intercept(tag, msg)) {
-            if (sPrintLineInfo) {
-                android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(depth)));
-            } else {
-                android.util.Log.v(tag, msg);
+    /**
+     * <p>Print verbose</p>
+     * @param tag
+     * @param msg
+     * @param start depth from Log.v() to this method
+     */
+	private static void verbose(String tag, String msg, String extra, int start) {
+		if (sEnable && sLevel <= VERBOSE) {
+            if (!intercept(tag, msg)) {
+                if (sPrintLineInfo) {
+                    android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                } else {
+                    android.util.Log.v(tag, msg);
+                }
+            }
+            if (extra != null && !extra.isEmpty()) {
+                android.util.Log.v(tag, extra);
             }
         }
 	}
 
     public static void v(String tag, String msg) {
-        v(tag, msg, 3);
+        verbose(tag, msg, null, 3);
+    }
+
+    public static void v(String tag, String msg, int callStackDepth) {
+        verbose(tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void v(String tag, String msg, Throwable tr) {
-        v(tag, msg + "\n" + getStackString(tr), 3);
+        verbose(tag, msg, getStackString(tr), 3);
     }
 
-	private static void i(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_I && !intercept(tag, msg)) {
-            if (sPrintLineInfo) {
-                android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(depth)));
-            } else {
-                android.util.Log.i(tag, msg);
+    private static void info(String tag, String msg, String extra, int start) {
+        if (sEnable && sLevel <= VERBOSE) {
+            if (!intercept(tag, msg)) {
+                if (sPrintLineInfo) {
+                    android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                } else {
+                    android.util.Log.i(tag, msg);
+                }
             }
-		}
-	}
+            if (extra != null && !extra.isEmpty()) {
+                android.util.Log.i(tag, extra);
+            }
+        }
+    }
 
     public static void i(String tag, String msg) {
-        i(tag, msg, 3);
+        info(tag, msg, null, 3);
+    }
+
+    public static void i(String tag, String msg, int callStackDepth) {
+        info(tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void i(String tag, String msg, Throwable tr) {
-        i(tag, msg + "\n" + getStackString(tr), 3);
+        info(tag, msg, getStackString(tr), 3);
     }
 
-	private static void d(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_D && !intercept(tag, msg)) {
-            if (sPrintLineInfo) {
-                android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(depth)));
-            } else {
-                android.util.Log.d(tag, msg);
+    private static void debug(String tag, String msg, String extra, int start) {
+        if (sEnable && sLevel <= VERBOSE) {
+            if (!intercept(tag, msg)) {
+                if (sPrintLineInfo) {
+                    android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                } else {
+                    android.util.Log.d(tag, msg);
+                }
             }
-		}
-	}
+            if (extra != null && !extra.isEmpty()) {
+                android.util.Log.d(tag, extra);
+            }
+        }
+    }
 
     public static void d(String tag, String msg) {
-        d(tag, msg, 3);
+        debug(tag, msg, null, 3);
+    }
+
+    public static void d(String tag, String msg, int callStackDepth) {
+        debug(tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void d(String tag, String msg, Throwable tr) {
-        d(tag, msg + "\n" + getStackString(tr), 3);
+        debug(tag, msg, getStackString(tr), 3);
     }
 
-	private static void w(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_W && !intercept(tag, msg)) {
-            if (sPrintLineInfo) {
-                android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(depth)));
-            } else {
-                android.util.Log.w(tag, msg);
+    private static void warn(String tag, String msg, String extra, int start) {
+        if (sEnable && sLevel <= VERBOSE) {
+            if (!intercept(tag, msg)) {
+                if (sPrintLineInfo) {
+                    android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                } else {
+                    android.util.Log.w(tag, msg);
+                }
             }
-		}
-	}
+            if (extra != null && !extra.isEmpty()) {
+                android.util.Log.w(tag, extra);
+            }
+        }
+    }
 
     public static void w(String tag, String msg) {
-        w(tag, msg, 3);
+        warn(tag, msg, null, 3);
+    }
+
+    public static void w(String tag, String msg, int callStackDepth) {
+        warn(tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void w(String tag, String msg, Throwable tr) {
-        w(tag, msg + "\n" + getStackString(tr), 3);
+        warn(tag, msg, getStackString(tr), 3);
     }
 
-	private static void e(String tag, String msg, int depth) {
-		if (sEnable && sLevel <= LEVEL_E && !intercept(tag, msg)) {
-            if (sPrintLineInfo) {
-                android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(depth)));
-            } else {
-                android.util.Log.e(tag, msg);
+    private static void error(String tag, String msg, String extra, int start) {
+        if (sEnable && sLevel <= VERBOSE) {
+            if (!intercept(tag, msg)) {
+                if (sPrintLineInfo) {
+                    android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                } else {
+                    android.util.Log.e(tag, msg);
+                }
             }
-		}
-	}
+            if (extra != null && !extra.isEmpty()) {
+                android.util.Log.e(tag, extra);
+            }
+        }
+    }
 
     public static void e(String tag, String msg) {
-        e(tag, msg, 3);
+        error(tag, msg, null, 3);
+    }
+
+    public static void e(String tag, String msg, int callStackDepth) {
+        error(tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void e(String tag, String msg, Throwable tr) {
-        e(tag, msg + "\n" + getStackString(tr), 3);
+        error(tag, msg, getStackString(tr), 3);
     }
 
     /**
@@ -197,17 +250,19 @@ public class Log {
     }
 
     /**
-     * Print call stack info.
-     * @param depth call depth
+     * <p>Get call stack</p>
+     * @param start call stack start level
+     * @param depth call stack depth
+     * @return
      */
-    public static void printCallStack(String tag, int depth) {
+    public static String getCallStack(int start, int depth) {
         Throwable tr = new Throwable();
         StackTraceElement[] arr = tr.getStackTrace();
         StringBuilder builder = new StringBuilder();
         // index start from '1' exclude current method call stack info.
-        for (int i = 1; i <= depth && i < arr.length; ++i) {
+        for (int i = start; i < (start + depth) && i < arr.length; ++i) {
             StackTraceElement e = arr[i];
-            String callInfo = String.format("%s.%s(%s:%d)",
+            String callInfo = String.format("    %s.%s(%s:%d)",
                     e.getClassName(),
                     e.getMethodName(),
                     e.getFileName(),
@@ -215,7 +270,7 @@ public class Log {
             );
             builder.append(callInfo).append("\n");
         }
-        android.util.Log.println(android.util.Log.VERBOSE, tag, builder.toString());
+        return builder.toString();
     }
 
     /**

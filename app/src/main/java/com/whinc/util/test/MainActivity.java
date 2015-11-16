@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Log.enablePrintLineInfo(false);
         Log.i(TAG, "disable print line info");
 
-        Log.level(Log.LEVEL_I);
+        Log.level(Log.INFO);
         Log.v(TAG, "debug");
         Log.i(TAG, "information");
         Log.e(TAG, "error");
@@ -125,17 +125,19 @@ public class MainActivity extends AppCompatActivity {
         Log.Formatter oldFormatter = Log.setFormatter(formatter);
         Log.i(TAG, "custom formatter");
 
-        Log.setFormatter(oldFormatter);
-        Log.level(Log.LEVEL_V);
-        Log.printCallStack(TAG, 2);
-        testLog2();
+        testLogVerbose();
+        testLogDebug();
+        testLogInfo();
+        testLogWarn();
+        testLogError();
     }
 
-    private void testLog2() {
-        Log.level(Log.LEVEL_V);
-        Log.printCallStack(TAG, 3);
-
+    private void testLogVerbose() {
         Log.restoreDefaultSetting();
+        Log.v(TAG, "verbose");
+        Log.v(TAG, "verbose", 2);
+        Log.v(TAG, "verbose", new Throwable());
+
         Log.setInterceptor(new Log.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
@@ -143,23 +145,120 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Log.v(TAG, "AAA");
-//        Log.d(TAG, "d");
-//        Log.i(TAG, "i");
-//        Log.w(TAG, "w");
-//        Log.e(TAG, "e");
-        Log.setInterceptor(new Log.Interceptor() {
+        Log.v(TAG, "verbose");
 
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
                 Log.v(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.v(TAG, "BBB");
-//        Log.d(TAG, "d");
-//        Log.i(TAG, "i");
-//        Log.w(TAG, "w");
-//        Log.e(TAG, "e");
+        Log.v(TAG, "verbose");
+    }
+
+    private void testLogDebug() {
+        Log.restoreDefaultSetting();
+        Log.d(TAG, "debug");
+        Log.d(TAG, "debug", 2);
+        Log.d(TAG, "debug", new Throwable());
+
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.d(TAG, "intercept " + msg);
+                return true;
+            }
+        });
+        Log.d(TAG, "debug");
+
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.d(TAG, "don't intercept " + msg);
+                return false;
+            }
+        });
+        Log.d(TAG, "debug");
+    }
+
+    private void testLogInfo() {
+        Log.restoreDefaultSetting();
+        Log.i(TAG, "info");
+        Log.i(TAG, "info", 2);
+        Log.i(TAG, "info", new Throwable());
+
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.i(TAG, "intercept " + msg);
+                return true;
+            }
+        });
+        Log.i(TAG, "info");
+
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.i(TAG, "don't intercept " + msg);
+                return false;
+            }
+        });
+        Log.i(TAG, "info");
+    }
+
+    private void testLogWarn() {
+        Log.restoreDefaultSetting();
+        Log.w(TAG, "warn");
+        Log.w(TAG, "warn", 2);
+        Log.w(TAG, "warn", new Throwable());
+
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.w(TAG, "intercept " + msg);
+                return true;
+            }
+        });
+        Log.w(TAG, "warn");
+
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.w(TAG, "don't intercept " + msg);
+                return false;
+            }
+        });
+        Log.w(TAG, "warn");
+    }
+
+    private void testLogError() {
+        Log.restoreDefaultSetting();
+        Log.e(TAG, "error");
+        Log.e(TAG, "error", 2);
+        Log.e(TAG, "error", new Throwable());
+
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.e(TAG, "intercept " + msg);
+                return true;
+            }
+        });
+        Log.e(TAG, "error");
+
+        Log.restoreDefaultSetting();
+        Log.setInterceptor(new Log.Interceptor() {
+            @Override
+            public boolean onIntercept(String tag, String msg) {
+                Log.e(TAG, "don't intercept " + msg);
+                return false;
+            }
+        });
+        Log.e(TAG, "error");
     }
 }

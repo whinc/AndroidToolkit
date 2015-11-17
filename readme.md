@@ -16,8 +16,23 @@ Below is introduction to these util class.
 
 ### [Log][log_wiki]
 
-A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [wiki][log_wiki]
+A light weight, easy to use and extensible Log class wrappers the android.util.Log with a single class. More details reference to [wiki][log_wiki]
 
+log demos:
+
+```
+// default formatter
+... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
+
+// custom formmatter
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - Thread:main
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - com.whinc.util.test.MainActivity.testLog (MainActivity.java:125)
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - custom formatter 
+...I/MainActivity: ---------------------------------
+```
 
 #### CrashHandler
 

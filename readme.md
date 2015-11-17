@@ -19,8 +19,7 @@ Below is introduction to these util class.
 A light weight, easy to use and extensible Log class wrappers the android.util.Log with a single class. More details reference to [wiki][log_wiki]
 
 log demos:
-
-```
+```java
 // default formatter
 ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
 

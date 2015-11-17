@@ -94,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
         Log.enablePrintLineInfo(false);
         Log.i(TAG, "disable print line info");
 
+        Log.enablePrintLineInfo(true);
         Log.level(Log.INFO);
-        Log.v(TAG, "debug");
+        Log.v(TAG, "verbose");
+        Log.d(TAG, "debug");
         Log.i(TAG, "information");
         Log.e(TAG, "error");
 

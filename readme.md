@@ -8,7 +8,7 @@ I has published this library on [jcenter][1], you can use in your module's build
 ```
 dependencies {
     ...
-    compile 'com.whinc.util:androidtoolkit:0.1.5'
+    compile 'com.whinc.util:androidtoolkit:0.1.6'
 }
 ```
 

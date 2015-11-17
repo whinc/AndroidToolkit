@@ -112,14 +112,34 @@ public class Log {
         if (sEnable && sLowestLevel <= level) {
             if (!intercept(tag, msg)) {
                 if (sPrintLineInfo) {
-                    android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                    printImpl(level, tag, sFormatter.format(msg, getStackTraceElement(start)));
                 } else {
-                    android.util.Log.v(tag, msg);
+                    printImpl(level, tag, msg);
                 }
             }
             if (extra != null && !extra.isEmpty()) {
-                android.util.Log.v(tag, extra);
+                printImpl(level, tag, extra);
             }
+        }
+    }
+
+    private static void printImpl(@Level int level, String tag, String msg) {
+        switch (level) {
+            case VERBOSE:
+                android.util.Log.v(tag, msg);
+                break;
+            case DEBUG:
+                android.util.Log.d(tag, msg);
+                break;
+            case INFO:
+                android.util.Log.i(tag, msg);
+                break;
+            case WARN:
+                android.util.Log.w(tag, msg);
+                break;
+            case ERROR:
+                android.util.Log.e(tag, msg);
+                break;
         }
     }
 

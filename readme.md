@@ -14,7 +14,18 @@ Below is introduction to these util class.
 
 ### [Log][wiki_Log]
 
-A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [Log][wiki_Log]
+A light weight, easy to use and extensible Log class wrappers the android.util.Log with single class. More details reference to [Log][wiki_Log]
+
+Log Features:
+
+* single class and all method is static, you can use just like built-in Log class in Android.
+* enable/disable log
+* log level used to filter different log level
+* print file name, class name, method name and line number
+* jump to source
+* print log call stack (you can specified the stack depth)
+* provide interface `Formatter` used to define yourself output formatter
+* provide interface `Interceptor` used to intercept the default log handle.
 
 Log demos:
 

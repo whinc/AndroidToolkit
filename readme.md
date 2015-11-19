@@ -14,9 +14,9 @@ dependencies {
 
 Below is introduction to these util class.
 
-### [Log][log_wiki]
+### [Log][wiki_Log]
 
-A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [wiki][log_wiki]
+A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [wiki][wiki_Log]
 
 
 #### CrashHandler
@@ -68,4 +68,4 @@ This is a custom message
 ```
 
 [1]:https://bintray.com/whinc/maven/androidtoolkit/view
-[log_wiki]:https://github.com/whinc/AndroidToolkit/wiki/Log
+[wiki_Log]:./wiki/Log.md

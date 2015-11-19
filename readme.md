@@ -20,7 +20,7 @@ Log Features:
 
 * single class and all method is static, you can use just like built-in Log class in Android.
 * enable/disable log
-* log level used to filter different log level
+* set log level used to filter different log level
 * print file name, class name, method name and line number
 * jump to source
 * print log call stack (you can specified the stack depth)
@@ -30,9 +30,13 @@ Log Features:
 Log demos:
 
     // default formatter
+    Log.i(TAG, "default output format");
     ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
 
     // custom formmatter
+    Log.Formatter formatter = new Log.Formatter() { ... }
+    Log.setFormatter(formatter);
+    Log.i(TAG, "custom formatter");
     ...I/MainActivity: ---------------------------------
     ...I/MainActivity: - Thread:main
     ...I/MainActivity: ---------------------------------

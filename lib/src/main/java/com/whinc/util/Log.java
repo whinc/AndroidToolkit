@@ -19,11 +19,11 @@ public class Log {
 
 	private static boolean sEnable = true;
     private static boolean sPrintLineInfo = true;
-    private static int sLevel = VERBOSE;
+    private static int sLowestLevel = VERBOSE;
     private static Formatter sFormatter = DEFAULT_FORMATTER;
     private static Interceptor sInterceptor = null;
 
-	// Disable new instance
+	// Disable default constructor
 	private Log() {}
 
     /** Enable or disable log output (default enable) */
@@ -54,7 +54,7 @@ public class Log {
     public static void restoreDefaultSetting() {
         sEnable = true;
         sPrintLineInfo = true;
-        sLevel = VERBOSE;
+        sLowestLevel = VERBOSE;
         sFormatter = DEFAULT_FORMATTER;
         sInterceptor = null;
     }
@@ -64,7 +64,7 @@ public class Log {
      * @param level reference to {@link com.whinc.util.Log.Level}
      */
     public static void level(@Level int level) {
-        sLevel = level;
+        sLowestLevel = level;
     }
 
     /**
@@ -101,144 +101,106 @@ public class Log {
     }
 
     /**
-     * <p>Print verbose</p>
-     * @param tag
-     * @param msg
-     * @param start depth from Log.v() to this method
+     * <p>Print log on specified level</p>
+     * @param level log level
+     * @param tag tag
+     * @param msg log message
+     * @param extra extra message
+     * @param start start of stack trace info
      */
-	private static void verbose(String tag, String msg, String extra, int start) {
-		if (sEnable && sLevel <= VERBOSE) {
+    private static void print(@Level int level, String tag, String msg, String extra, int start) {
+        if (sEnable && sLowestLevel <= level) {
             if (!intercept(tag, msg)) {
                 if (sPrintLineInfo) {
-                    android.util.Log.v(tag, sFormatter.format(msg, getStackTraceElement(start)));
+                    printImpl(level, tag, sFormatter.format(msg, getStackTraceElement(start)));
                 } else {
-                    android.util.Log.v(tag, msg);
+                    printImpl(level, tag, msg);
                 }
             }
             if (extra != null && !extra.isEmpty()) {
-                android.util.Log.v(tag, extra);
+                printImpl(level, tag, extra);
             }
         }
-	}
+    }
+
+    private static void printImpl(@Level int level, String tag, String msg) {
+        switch (level) {
+            case VERBOSE:
+                android.util.Log.v(tag, msg);
+                break;
+            case DEBUG:
+                android.util.Log.d(tag, msg);
+                break;
+            case INFO:
+                android.util.Log.i(tag, msg);
+                break;
+            case WARN:
+                android.util.Log.w(tag, msg);
+                break;
+            case ERROR:
+                android.util.Log.e(tag, msg);
+                break;
+        }
+    }
 
     public static void v(String tag, String msg) {
-        verbose(tag, msg, null, 3);
+        print(VERBOSE, tag, msg, null, 3);
     }
 
     public static void v(String tag, String msg, int callStackDepth) {
-        verbose(tag, msg, getCallStack(3, callStackDepth), 3);
+        print(VERBOSE, tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void v(String tag, String msg, Throwable tr) {
-        verbose(tag, msg, getStackString(tr), 3);
-    }
-
-    private static void info(String tag, String msg, String extra, int start) {
-        if (sEnable && sLevel <= VERBOSE) {
-            if (!intercept(tag, msg)) {
-                if (sPrintLineInfo) {
-                    android.util.Log.i(tag, sFormatter.format(msg, getStackTraceElement(start)));
-                } else {
-                    android.util.Log.i(tag, msg);
-                }
-            }
-            if (extra != null && !extra.isEmpty()) {
-                android.util.Log.i(tag, extra);
-            }
-        }
+        print(VERBOSE, tag, msg, getStackString(tr), 3);
     }
 
     public static void i(String tag, String msg) {
-        info(tag, msg, null, 3);
+        print(INFO, tag, msg, null, 3);
     }
 
     public static void i(String tag, String msg, int callStackDepth) {
-        info(tag, msg, getCallStack(3, callStackDepth), 3);
+        print(INFO, tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void i(String tag, String msg, Throwable tr) {
-        info(tag, msg, getStackString(tr), 3);
-    }
-
-    private static void debug(String tag, String msg, String extra, int start) {
-        if (sEnable && sLevel <= VERBOSE) {
-            if (!intercept(tag, msg)) {
-                if (sPrintLineInfo) {
-                    android.util.Log.d(tag, sFormatter.format(msg, getStackTraceElement(start)));
-                } else {
-                    android.util.Log.d(tag, msg);
-                }
-            }
-            if (extra != null && !extra.isEmpty()) {
-                android.util.Log.d(tag, extra);
-            }
-        }
+        print(INFO, tag, msg, getStackString(tr), 3);
     }
 
     public static void d(String tag, String msg) {
-        debug(tag, msg, null, 3);
+        print(DEBUG, tag, msg, null, 3);
     }
 
     public static void d(String tag, String msg, int callStackDepth) {
-        debug(tag, msg, getCallStack(3, callStackDepth), 3);
+        print(DEBUG, tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void d(String tag, String msg, Throwable tr) {
-        debug(tag, msg, getStackString(tr), 3);
-    }
-
-    private static void warn(String tag, String msg, String extra, int start) {
-        if (sEnable && sLevel <= VERBOSE) {
-            if (!intercept(tag, msg)) {
-                if (sPrintLineInfo) {
-                    android.util.Log.w(tag, sFormatter.format(msg, getStackTraceElement(start)));
-                } else {
-                    android.util.Log.w(tag, msg);
-                }
-            }
-            if (extra != null && !extra.isEmpty()) {
-                android.util.Log.w(tag, extra);
-            }
-        }
+        print(DEBUG, tag, msg, getStackString(tr), 3);
     }
 
     public static void w(String tag, String msg) {
-        warn(tag, msg, null, 3);
+        print(WARN, tag, msg, null, 3);
     }
 
     public static void w(String tag, String msg, int callStackDepth) {
-        warn(tag, msg, getCallStack(3, callStackDepth), 3);
+        print(WARN, tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void w(String tag, String msg, Throwable tr) {
-        warn(tag, msg, getStackString(tr), 3);
-    }
-
-    private static void error(String tag, String msg, String extra, int start) {
-        if (sEnable && sLevel <= VERBOSE) {
-            if (!intercept(tag, msg)) {
-                if (sPrintLineInfo) {
-                    android.util.Log.e(tag, sFormatter.format(msg, getStackTraceElement(start)));
-                } else {
-                    android.util.Log.e(tag, msg);
-                }
-            }
-            if (extra != null && !extra.isEmpty()) {
-                android.util.Log.e(tag, extra);
-            }
-        }
+        print(WARN, tag, msg, getStackString(tr), 3);
     }
 
     public static void e(String tag, String msg) {
-        error(tag, msg, null, 3);
+        print(ERROR, tag, msg, null, 3);
     }
 
     public static void e(String tag, String msg, int callStackDepth) {
-        error(tag, msg, getCallStack(3, callStackDepth), 3);
+        print(ERROR, tag, msg, getCallStack(3, callStackDepth), 3);
     }
 
     public static void e(String tag, String msg, Throwable tr) {
-        error(tag, msg, getStackString(tr), 3);
+        print(ERROR, tag, msg, getStackString(tr), 3);
     }
 
     /**

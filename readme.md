@@ -8,7 +8,7 @@ I has published this library on [jcenter][1], you can use in your module's build
 ```
 dependencies {
     ...
-    compile 'com.whinc.util:androidtoolkit:0.1.4'
+    compile 'com.whinc.util:androidtoolkit:0.1.6'
 }
 ```
 
@@ -18,6 +18,20 @@ Below is introduction to these util class.
 
 A light weight, easy to use and extensible Log class wrappers the android.util.Log with only a single class. More details reference to [wiki][wiki_Log]
 
+log demos:
+```java
+// default formatter
+... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
+
+// custom formmatter
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - Thread:main
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - com.whinc.util.test.MainActivity.testLog (MainActivity.java:125)
+...I/MainActivity: ---------------------------------
+...I/MainActivity: - custom formatter 
+...I/MainActivity: ---------------------------------
+```
 
 #### CrashHandler
 

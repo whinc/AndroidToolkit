@@ -1,4 +1,4 @@
-package com.whinc.util.logging;
+package com.whinc.utils.logging;
 
 import android.support.annotation.IntDef;
 import android.util.Log;
@@ -202,6 +202,10 @@ public class QLog {
 
     public static void e(String tag, String msg, Throwable tr) {
         print(ERROR, tag, msg, getStackString(tr), 3);
+    }
+
+    public static void e(String tag, Throwable tr) {
+        e(tag, "", tr);
     }
 
     /**

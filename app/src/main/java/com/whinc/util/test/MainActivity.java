@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whinc.util.CrashHandler;
-import com.whinc.util.logging.QLog;
+import com.whinc.utils.logging.QLog;
 
 import java.io.File;
 

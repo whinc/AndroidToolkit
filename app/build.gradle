@@ -24,7 +24,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.+'
     compile 'com.android.support:design:23.1.+'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile project(':lib')
-    compile project(':log')
+    compile project(':toolkit-lib')
+    compile project(':toolkit-log')
 //    compile 'com.github.whinc:android-toolkit:-SNAPSHOT'
+//    compile 'com.github.whinc.android-toolkit:log:-SNAPSHOT'
+//    compile 'com.github.whinc.android-toolkit:lib:-snapshot'
 }

@@ -14,13 +14,30 @@ allprojects {
 }
 ```
 
- Add the dependency in your module build.gradle:
+Add the dependency in your module build.gradle(current `<version>` is `-SNAPSHOT`):
 
 ```
 dependencies {
-    compile 'com.github.whinc:android-toolkit:-SNAPSHOT'
+    compile 'com.github.whinc:android-toolkit:<version>'
 }
 ```
+
+You can use separated library if you only need some function of it.
+
+* Include only logging functions
+```
+dependencies {
+    compile 'com.github.whinc.android-toolkit:log:<version>'
+}
+```
+
+* Include other functions except above
+```
+dependencies {
+    compile 'com.github.whinc.android-toolkit:lib:<version>'
+}
+```
+
 
 ### [QLog][2]
 

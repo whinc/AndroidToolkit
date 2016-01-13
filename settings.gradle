@@ -1,1 +1,1 @@
-include ':app', ':lib', ':log'
+include ':app', ':toolkit-lib', ':toolkit-log'

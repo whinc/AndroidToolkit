@@ -1,3 +1,32 @@
+### Features
+
+* single class and all method is static, you can use just like built-in Log class in Android.
+* enable/disable log
+* set log level used to filter different log level
+* print file name, class name, method name and line number
+* jump to source
+* print log call stack (you can specified the stack depth)
+* provide interface `Formatter` used to define yourself output formatter
+* provide interface `Interceptor` used to intercept the default log handle.
+
+QLog demos:
+
+    // default formatter
+    QLog.i(TAG, "default output format");
+    ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
+
+    // custom formmatter
+    QLog.Formatter formatter = new Log.Formatter() { ... }
+    QLog.setFormatter(formatter);
+    QLog.i(TAG, "custom formatter");
+    ...I/MainActivity: ---------------------------------
+    ...I/MainActivity: - Thread:main
+    ...I/MainActivity: ---------------------------------
+    ...I/MainActivity: - com.whinc.util.test.MainActivity.testLog (MainActivity.java:125)
+    ...I/MainActivity: ---------------------------------
+    ...I/MainActivity: - custom formatter
+    ...I/MainActivity: ---------------------------------
+
 ### How to use
 
 Primary method of `QLog` class:

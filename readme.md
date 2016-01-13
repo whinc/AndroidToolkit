@@ -5,14 +5,22 @@ A toolkit for android include many useful classes help you develop faster.
 
 ### Integration
 
-I has published this library on [jcenter][1], you can use in your module's build.gradle like below:
-
-    dependencies {
-        ...
-        compile 'com.whinc.util:androidtoolkit:0.1.6'
+Add it in your root build.gradle at the end of repositories:
+```
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
     }
+}
+```
 
-Below is introduction to these util class.
+ Add the dependency in your module build.gradle:
+
+```
+dependencies {
+    compile 'com.github.whinc:android-toolkit:-SNAPSHOT'
+}
+```
 
 ### [QLog][2]
 

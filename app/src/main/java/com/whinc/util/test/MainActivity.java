@@ -5,11 +5,12 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whinc.util.CrashHandler;
-import com.whinc.util.Log;
+import com.whinc.util.logging.QLog;
 
 import java.io.File;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_log:
-                testLog();
+                testQLog();
                 break;
             case R.id.action_crash_handler:
                 testCrashHandler();
@@ -62,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
      * Test {@link com.whinc.util.CrashHandler}
      */
     private void testCrashHandler() {
-        String crashLogPath = Environment.getExternalStorageDirectory() + File.separator
-                + "crash-" + System.currentTimeMillis() + ".log";
+        String crashQLogPath = Environment.getExternalStorageDirectory() + File.separator
+                + "crash-" + System.currentTimeMillis() + ".QLog";
         Context context = this;
         String extraMsg = "This is a custom message";
 
         CrashHandler.newInstance()
-                .setSavePath(crashLogPath)
+                .setSavePath(crashQLogPath)
                 .enableCollectDeviceInfo(context)
                 .appendMessage(extraMsg)
                 .setListener(new CrashHandler.Listener() {
@@ -85,28 +86,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Test {@link Log}
+     * Test {@link QLog}
      */
-    private void testLog() {
-        Log.i(TAG, "default output format");
-        Log.i(TAG, "default output format", new Throwable());
+    private void testQLog() {
+        QLog.i(TAG, "default output format");
+        QLog.i(TAG, "default output format", new Throwable());
 
-        Log.enablePrintLineInfo(false);
-        Log.i(TAG, "disable print line info");
+        QLog.enablePrintLineInfo(false);
+        QLog.i(TAG, "disable print line info");
 
-        Log.enablePrintLineInfo(true);
-        Log.level(Log.INFO);
-        Log.v(TAG, "verbose");
-        Log.d(TAG, "debug");
-        Log.i(TAG, "information");
-        Log.e(TAG, "error");
+        QLog.enablePrintLineInfo(true);
+        QLog.level(QLog.INFO);
+        QLog.v(TAG, "verbose");
+        QLog.d(TAG, "debug");
+        QLog.i(TAG, "information");
+        QLog.e(TAG, "error");
 
-        Log.enable(false);
-        Log.v(TAG, "disable log");
+        QLog.enable(false);
+        QLog.v(TAG, "disable QLog");
 
-        Log.enable(true);
-        Log.enablePrintLineInfo(true);
-        Log.Formatter formatter = new Log.Formatter() {
+        QLog.enable(true);
+        QLog.enablePrintLineInfo(true);
+        QLog.Formatter formatter = new QLog.Formatter() {
 
             @Override
             public String format(String msg, StackTraceElement e) {
@@ -124,143 +125,143 @@ public class MainActivity extends AppCompatActivity {
                 return builder.toString();
             }
         };
-        Log.Formatter oldFormatter = Log.setFormatter(formatter);
-        Log.i(TAG, "custom formatter");
+        QLog.Formatter oldFormatter = QLog.setFormatter(formatter);
+        QLog.i(TAG, "custom formatter");
 
-        testLogVerbose();
-        testLogDebug();
-        testLogInfo();
-        testLogWarn();
-        testLogError();
+        testQLogVerbose();
+        testQLogDebug();
+        testQLogInfo();
+        testQLogWarn();
+        testQLogError();
     }
 
-    private void testLogVerbose() {
-        Log.restoreDefaultSetting();
-        Log.v(TAG, "verbose");
-        Log.v(TAG, "verbose", 2);
-        Log.v(TAG, "verbose", new Throwable());
+    private void testQLogVerbose() {
+        QLog.restoreDefaultSetting();
+        QLog.v(TAG, "verbose");
+        QLog.v(TAG, "verbose", 2);
+        QLog.v(TAG, "verbose", new Throwable());
 
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.v(TAG, "intercept " + msg);
+                QLog.v(TAG, "intercept " + msg);
                 return true;
             }
         });
-        Log.v(TAG, "verbose");
+        QLog.v(TAG, "verbose");
 
-        Log.restoreDefaultSetting();
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.restoreDefaultSetting();
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.v(TAG, "don't intercept " + msg);
+                QLog.v(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.v(TAG, "verbose");
+        QLog.v(TAG, "verbose");
     }
 
-    private void testLogDebug() {
-        Log.restoreDefaultSetting();
-        Log.d(TAG, "debug");
-        Log.d(TAG, "debug", 2);
-        Log.d(TAG, "debug", new Throwable());
+    private void testQLogDebug() {
+        QLog.restoreDefaultSetting();
+        QLog.d(TAG, "debug");
+        QLog.d(TAG, "debug", 2);
+        QLog.d(TAG, "debug", new Throwable());
 
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.d(TAG, "intercept " + msg);
+                QLog.d(TAG, "intercept " + msg);
                 return true;
             }
         });
-        Log.d(TAG, "debug");
+        QLog.d(TAG, "debug");
 
-        Log.restoreDefaultSetting();
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.restoreDefaultSetting();
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.d(TAG, "don't intercept " + msg);
+                QLog.d(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.d(TAG, "debug");
+        QLog.d(TAG, "debug");
     }
 
-    private void testLogInfo() {
-        Log.restoreDefaultSetting();
-        Log.i(TAG, "info");
-        Log.i(TAG, "info", 2);
-        Log.i(TAG, "info", new Throwable());
+    private void testQLogInfo() {
+        QLog.restoreDefaultSetting();
+        QLog.i(TAG, "info");
+        QLog.i(TAG, "info", 2);
+        QLog.i(TAG, "info", new Throwable());
 
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.i(TAG, "intercept " + msg);
+                QLog.i(TAG, "intercept " + msg);
                 return true;
             }
         });
-        Log.i(TAG, "info");
+        QLog.i(TAG, "info");
 
-        Log.restoreDefaultSetting();
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.restoreDefaultSetting();
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.i(TAG, "don't intercept " + msg);
+                QLog.i(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.i(TAG, "info");
+        QLog.i(TAG, "info");
     }
 
-    private void testLogWarn() {
-        Log.restoreDefaultSetting();
-        Log.w(TAG, "warn");
-        Log.w(TAG, "warn", 2);
-        Log.w(TAG, "warn", new Throwable());
+    private void testQLogWarn() {
+        QLog.restoreDefaultSetting();
+        QLog.w(TAG, "warn");
+        QLog.w(TAG, "warn", 2);
+        QLog.w(TAG, "warn", new Throwable());
 
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.w(TAG, "intercept " + msg);
+                QLog.w(TAG, "intercept " + msg);
                 return true;
             }
         });
-        Log.w(TAG, "warn");
+        QLog.w(TAG, "warn");
 
-        Log.restoreDefaultSetting();
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.restoreDefaultSetting();
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.w(TAG, "don't intercept " + msg);
+                QLog.w(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.w(TAG, "warn");
+        QLog.w(TAG, "warn");
     }
 
-    private void testLogError() {
-        Log.restoreDefaultSetting();
-        Log.e(TAG, "error");
-        Log.e(TAG, "error", 2);
-        Log.e(TAG, "error", new Throwable());
+    private void testQLogError() {
+        QLog.restoreDefaultSetting();
+        QLog.e(TAG, "error");
+        QLog.e(TAG, "error", 2);
+        QLog.e(TAG, "error", new Throwable());
 
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.e(TAG, "intercept " + msg);
+                QLog.e(TAG, "intercept " + msg);
                 return true;
             }
         });
-        Log.e(TAG, "error");
+        QLog.e(TAG, "error");
 
-        Log.restoreDefaultSetting();
-        Log.setInterceptor(new Log.Interceptor() {
+        QLog.restoreDefaultSetting();
+        QLog.setInterceptor(new QLog.Interceptor() {
             @Override
             public boolean onIntercept(String tag, String msg) {
-                Log.e(TAG, "don't intercept " + msg);
+                QLog.e(TAG, "don't intercept " + msg);
                 return false;
             }
         });
-        Log.e(TAG, "error");
+        QLog.e(TAG, "error");
     }
 }

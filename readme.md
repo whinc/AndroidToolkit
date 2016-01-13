@@ -12,11 +12,11 @@ I has published this library on [jcenter][1], you can use in your module's build
 
 Below is introduction to these util class.
 
-### [Log][wiki_Log]
+### [QLog][2]
 
 A light weight, easy to use and extensible Log class wrappers the android.util.Log with single class. More details reference to [Log][wiki_Log]
 
-Log Features:
+QLog Features:
 
 * single class and all method is static, you can use just like built-in Log class in Android.
 * enable/disable log
@@ -27,16 +27,16 @@ Log Features:
 * provide interface `Formatter` used to define yourself output formatter
 * provide interface `Interceptor` used to intercept the default log handle.
 
-Log demos:
+QLog demos:
 
     // default formatter
-    Log.i(TAG, "default output format");
+    QLog.i(TAG, "default output format");
     ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
 
     // custom formmatter
-    Log.Formatter formatter = new Log.Formatter() { ... }
-    Log.setFormatter(formatter);
-    Log.i(TAG, "custom formatter");
+    QLog.Formatter formatter = new Log.Formatter() { ... }
+    QLog.setFormatter(formatter);
+    QLog.i(TAG, "custom formatter");
     ...I/MainActivity: ---------------------------------
     ...I/MainActivity: - Thread:main
     ...I/MainActivity: ---------------------------------
@@ -90,4 +90,4 @@ Following is the crash log content:
     This is a custom message
 
 [1]:https://bintray.com/whinc/maven/androidtoolkit/view
-[wiki_Log]:./wiki/Log.md
+[2]:./wiki/QLog.md

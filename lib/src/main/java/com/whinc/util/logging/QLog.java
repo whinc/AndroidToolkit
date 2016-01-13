@@ -1,16 +1,17 @@
-package com.whinc.util;
+package com.whinc.util.logging;
 
 import android.support.annotation.IntDef;
+import android.util.Log;
 
 /**
- * Enhanced version of {@link android.util.Log}
+ * Enhanced version of {@link Log}
  */
-public class Log {
-    public static final int VERBOSE = android.util.Log.VERBOSE;
-    public static final int DEBUG = android.util.Log.DEBUG;
-    public static final int INFO = android.util.Log.INFO;
-    public static final int WARN = android.util.Log.WARN;
-    public static final int ERROR = android.util.Log.ERROR;
+public class QLog {
+    public static final int VERBOSE = Log.VERBOSE;
+    public static final int DEBUG = Log.DEBUG;
+    public static final int INFO = Log.INFO;
+    public static final int WARN = Log.WARN;
+    public static final int ERROR = Log.ERROR;
     @IntDef({VERBOSE, DEBUG, INFO, WARN, ERROR})
     public @interface Level{}
 
@@ -24,7 +25,7 @@ public class Log {
     private static Interceptor sInterceptor = null;
 
 	// Disable default constructor
-	private Log() {}
+	private QLog() {}
 
     /** Enable or disable log output (default enable) */
 	public static void enable(boolean b) {
@@ -38,7 +39,7 @@ public class Log {
 
     /**
      * Set custom formatter
-     * @param formatter reference to {@link com.whinc.util.Log.Formatter}
+     * @param formatter reference to {@link QLog.Formatter}
      * @return return previous formatter.
      */
     public static Formatter setFormatter(Formatter formatter) {
@@ -61,7 +62,7 @@ public class Log {
 
     /**
      * Set the least log level.
-     * @param level reference to {@link com.whinc.util.Log.Level}
+     * @param level reference to {@link QLog.Level}
      */
     public static void level(@Level int level) {
         sLowestLevel = level;
@@ -92,7 +93,7 @@ public class Log {
         // store interceptor before call method onIntercept()
         Interceptor prevInterceptor = sInterceptor;
         /* set interceptor to null, this can prevent from recursion call if user call
-        Log.v (Log.d, Log.i, etc...) in onIntercept() which will lead to StackOverflow */
+        QLog.v (QLog.d, QLog.i, etc...) in onIntercept() which will lead to StackOverflow */
         sInterceptor = null;
         boolean r = prevInterceptor.onIntercept(tag, msg);
         // restore interceptor after call method onIntercept()
@@ -126,19 +127,19 @@ public class Log {
     private static void printImpl(@Level int level, String tag, String msg) {
         switch (level) {
             case VERBOSE:
-                android.util.Log.v(tag, msg);
+                Log.v(tag, msg);
                 break;
             case DEBUG:
-                android.util.Log.d(tag, msg);
+                Log.d(tag, msg);
                 break;
             case INFO:
-                android.util.Log.i(tag, msg);
+                Log.i(tag, msg);
                 break;
             case WARN:
-                android.util.Log.w(tag, msg);
+                Log.w(tag, msg);
                 break;
             case ERROR:
-                android.util.Log.e(tag, msg);
+                Log.e(tag, msg);
                 break;
         }
     }
@@ -208,7 +209,7 @@ public class Log {
      * @param tr An exception to log
      */
     public static String getStackString(Throwable tr) {
-        return android.util.Log.getStackTraceString(tr);
+        return Log.getStackTraceString(tr);
     }
 
     /**

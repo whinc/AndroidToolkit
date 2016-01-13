@@ -1,6 +1,6 @@
 ### How to use
 
-Primary method of `Log` class:
+Primary method of `QLog` class:
 
     // v, d, i, w, e
     public static void v(String tag, String msg);
@@ -16,18 +16,18 @@ Primary method of `Log` class:
 
 Normal usage:
 
-    Log.i(TAG, "default output format");
+    QLog.i(TAG, "default output format");
     // logcat output
     ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:91):default output format
 
     int callStackDepth = 3;
-    Log.i(TAG, "default output format"， callStackDepth);
+    QLog.i(TAG, "default output format"， callStackDepth);
     // logcat output
     ... I/MainActivity: com.whinc.util.test.MainActivity.testLogInfo(MainActivity.java:91):default output format
     ... I/MainActivity: com.whinc.util.test.MainActivity.testLog(MainActivity.java:130)
     ... I/MainActivity: com.whinc.util.test.MainActivity.onOptionsItemSelected(MainActivity.java:49)
 
-    Log.i(TAG, "default output format", new Throwable());
+    QLog.i(TAG, "default output format", new Throwable());
     // logcat output
     ... I/MainActivity﹕ com.whinc.util.test.MainActivity.testLog(MainActivity.java:92):default output format
         java.lang.Throwable
@@ -38,21 +38,21 @@ Normal usage:
 
 Disable print line infomation:
 
-    Log.enablePrintLineInfo(false);
-    Log.i(TAG, "disable print line info");
+    QLog.enablePrintLineInfo(false);
+    QLog.i(TAG, "disable print line info");
 
     // logcat output
     ...I/MainActivity: disable print line info
 
 Setup log level:
 
-    Log.enablePrintLineInfo(false);
-    Log.level(Log.INFO);
-    Log.v(TAG, "verbose");
-    Log.d(TAG, "debug");
-    Log.i(TAG, "info");
-    Log.w(TAG, "warn");
-    Log.e(TAG, "error");
+    QLog.enablePrintLineInfo(false);
+    QLog.level(Log.INFO);
+    QLog.v(TAG, "verbose");
+    QLog.d(TAG, "debug");
+    QLog.i(TAG, "info");
+    QLog.w(TAG, "warn");
+    QLog.e(TAG, "error");
 
     // logcat output
     ...I/MainActivity: info
@@ -61,14 +61,14 @@ Setup log level:
 
 Disable log:
 
-    Log.enable(false);
-    Log.v(TAG, "disable log");
+    QLog.enable(false);
+    QLog.v(TAG, "disable log");
 
     // logcat output none
 
 Define custom output format:
 
-    Log.Formatter formatter = new Log.Formatter() {
+    QLog.Formatter formatter = new QLog.Formatter() {
 
         @Override
         public String format(String msg, StackTraceElement e) {
@@ -87,8 +87,8 @@ Define custom output format:
             return builder.toString();
         }
     };
-    Log.setFormatter(formatter);
-    Log.i(TAG, "custom formatter");
+    QLog.setFormatter(formatter);
+    QLog.i(TAG, "custom formatter");
 
     // logcat output
     ...I/MainActivity: ---------------------------------
@@ -101,16 +101,16 @@ Define custom output format:
 
 Intercept log output:
 
-    Log.restoreDefaultSetting();
-    Log.setInterceptor(new Log.Interceptor() {
+    QLog.restoreDefaultSetting();
+    QLog.setInterceptor(new Log.Interceptor() {
         @Override
         public boolean onIntercept(String tag, String msg) {
             Log.v(TAG, "intercept " + msg);
             return true;        // return true to consume the log message
         }
     });
-    Log.v(TAG, "AAA");
-    Log.setInterceptor(new Log.Interceptor() {
+    QLog.v(TAG, "AAA");
+    QLog.setInterceptor(new Log.Interceptor() {
 
         @Override
         public boolean onIntercept(String tag, String msg) {
@@ -118,7 +118,7 @@ Intercept log output:
             return false;       // return false to don't consume the log message
         }
     });
-    Log.v(TAG, "BBB");
+    QLog.v(TAG, "BBB");
 
     // logcat output
     ...V/MainActivity﹕ com.whinc.util.test.MainActivity$3.onIntercept(MainActivity.java:142):intercept AAA

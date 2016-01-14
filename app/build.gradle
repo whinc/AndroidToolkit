@@ -24,9 +24,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.+'
     compile 'com.android.support:design:23.1.+'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile project(':toolkit-all')
-//     compile 'com.github.whinc:android-toolkit:998f1b6d72'
+    compile project(':toolkit-log')
+    compile project(':toolkit-util')
+//     compile 'com.github.whinc:android-toolkit:cdddc38c32'
 //    compile 'com.github.whinc.android-toolkit:toolkit-all:-SNAPSHOT'
-//    compile 'com.github.whinc.android-toolkit:toolkit-log:-SNAPSHOT'
-//    compile 'com.github.whinc.android-toolkit:toolkit-lib:-SNAPSHOT'
+//    compile 'com.github.whinc.android-toolkit:toolkit-log:cdddc38c32'
+//    compile 'com.github.whinc.android-toolkit:toolkit-util:cdddc38c32'
 }

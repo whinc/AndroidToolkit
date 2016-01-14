@@ -14,27 +14,21 @@ allprojects {
 }
 ```
 
-Add the dependency in your module build.gradle(current `<version>` is `-SNAPSHOT`):
+Add the dependency in your module build.gradle(current `<version>` is `v1.1.4`). You can only use module you need.
+
+* Log module
 
 ```
 dependencies {
-    compile 'com.github.whinc:android-toolkit:<version>'
+    compile 'com.github.whinc.android-toolkit:toolkit-log:<version>'
 }
 ```
 
-You can use separated library if you only need some function of it.
+* Util module
 
-* Include only logging functions
 ```
 dependencies {
-    compile 'com.github.whinc.android-toolkit:log:<version>'
-}
-```
-
-* Include other functions except above
-```
-dependencies {
-    compile 'com.github.whinc.android-toolkit:lib:<version>'
+    compile 'com.github.whinc.android-toolkit:toolkit-util:<version>'
 }
 ```
 

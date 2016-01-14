@@ -26,9 +26,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':toolkit-log')
     compile project(':toolkit-util')
-//     compile 'com.github.whinc:android-toolkit:04f5a4079d'
-//    compile 'com.github.whinc.android-toolkit:toolkit-util:743cc70aec'
-//    compile 'com.github.whinc.android-toolkit:toolkit-log:743cc70aec'
-//    compile 'com.github.whinc.android-toolkit:toolkit-log:-SNAPSHOT'
-//    compile 'com.github.whinc.android-toolkit:toolkit-util:-SNAPSHOT'
+//    compile 'com.github.whinc.android-toolkit:toolkit-util:v1.1.4'
+//    compile 'com.github.whinc.android-toolkit:toolkit-log:v1.1.4'
 }
